@@ -19,7 +19,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.GenerationType;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Incidente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
