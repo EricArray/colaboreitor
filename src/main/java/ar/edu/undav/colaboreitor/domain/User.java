@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.GenerationType;
 
 @Entity
@@ -31,10 +34,10 @@ public class User {
 	protected int dni;
 	protected Timestamp creacion;
 
-	@OneToMany(targetEntity=Incidente.class, mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Incidente.class, mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	protected List<Incidente> incidentes;
 
-	@OneToMany(targetEntity=Reaccion.class, mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(targetEntity=Reaccion.class, mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	protected List<Reaccion> reacciones;
 
 	
