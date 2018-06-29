@@ -3,20 +3,17 @@ package ar.edu.undav.colaboreitor.domain;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.GenerationType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -28,11 +25,14 @@ public class User {
 	protected String username;
 	protected String password;
 	protected String nombre_real;
-	protected String cp;
 	protected BigDecimal lng;
 	protected BigDecimal lat;
 	protected int dni;
 	protected Timestamp creacion;
+	
+	@ManyToOne
+	@JoinColumn(name="cp")
+	protected Cp cp;
 
 	@OneToMany(targetEntity=Incidente.class, mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
 	protected List<Incidente> incidentes;
@@ -45,7 +45,7 @@ public class User {
 		super();
 	}
 
-	public User(String username, String password, String nombre_real, String cp,
+	public User(String username, String password, String nombre_real, Cp cp,
 			BigDecimal lng, BigDecimal lat,
 			int dni, Timestamp creacion) {
 		super();
@@ -91,11 +91,11 @@ public class User {
 		this.nombre_real = nombre_real;
 	}
 
-	public String getCp() {
+	public Cp getCp() {
 		return cp;
 	}
 
-	public void setCp(String cp) {
+	public void setCp(Cp cp) {
 		this.cp = cp;
 	}
 

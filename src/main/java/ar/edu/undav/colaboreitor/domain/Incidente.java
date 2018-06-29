@@ -6,30 +6,26 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.OnDelete;
-
-import javax.persistence.GenerationType;
 
 @Entity
 public class Incidente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name="user")
 	protected User user;
+
+	@ManyToOne
+	@JoinColumn(name="cp")
+	protected Cp cp;
 	
 	protected BigDecimal lng;
 	protected BigDecimal lat;
@@ -48,9 +44,10 @@ public class Incidente {
 	}
 
 
-	public Incidente(User user, BigDecimal lng, BigDecimal lat, Timestamp creacion) {
+	public Incidente(User user, Cp cp, BigDecimal lng, BigDecimal lat, Timestamp creacion) {
 		super();
 		this.user = user;
+		this.cp = cp;
 		this.lng = lng;
 		this.lat = lat;
 		this.creacion = creacion;
@@ -74,6 +71,26 @@ public class Incidente {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+
+	public Cp getCp() {
+		return cp;
+	}
+
+
+	public void setCp(Cp cp) {
+		this.cp = cp;
+	}
+
+
+	public List<Reaccion> getReacciones() {
+		return reacciones;
+	}
+
+
+	public void setReacciones(List<Reaccion> reacciones) {
+		this.reacciones = reacciones;
 	}
 
 

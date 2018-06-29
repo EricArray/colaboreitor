@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -13,8 +15,11 @@ public class Foto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
+
+	@ManyToOne
+	@JoinColumn(name="incidente")
+	protected Incidente incidente;
 	
-	protected Long incidente;
 	protected String path;
 	
 	
@@ -22,9 +27,8 @@ public class Foto {
 		super();
 	}
 	
-	public Foto(Long id, Long incidente, String path) {
+	public Foto(Incidente incidente, String path) {
 		super();
-		this.id = id;
 		this.incidente = incidente;
 		this.path = path;
 	}
@@ -37,11 +41,11 @@ public class Foto {
 		this.id = id;
 	}
 
-	public Long getIncidente() {
+	public Incidente getIncidente() {
 		return incidente;
 	}
 
-	public void setIncidente(Long incidente) {
+	public void setIncidente(Incidente incidente) {
 		this.incidente = incidente;
 	}
 
