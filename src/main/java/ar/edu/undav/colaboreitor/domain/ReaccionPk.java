@@ -9,16 +9,16 @@ public class ReaccionPk implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	protected Long incidente;
-	protected Long user;
+	protected Long cuenta;
 	
 	
 	public ReaccionPk() {
 		super();
 	}
-	public ReaccionPk(Long incidente, Long user) {
+	public ReaccionPk(Long incidente, Long cuenta) {
 		super();
 		this.incidente = incidente;
-		this.user = user;
+		this.cuenta = cuenta;
 	}
 	
 	public Long getIncidente() {
@@ -27,11 +27,11 @@ public class ReaccionPk implements Serializable {
 	public void setIncidente(Long incidente) {
 		this.incidente = incidente;
 	}
-	public Long getUser() {
-		return user;
+	public Long getCuenta() {
+		return cuenta;
 	}
-	public void setUser(Long user) {
-		this.user = user;
+	public void setCuenta(Long cuenta) {
+		this.cuenta = cuenta;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;

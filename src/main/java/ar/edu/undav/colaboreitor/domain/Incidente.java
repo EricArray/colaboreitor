@@ -20,8 +20,8 @@ public class Incidente {
 	protected Long id;
 
 	@ManyToOne
-	@JoinColumn(name="user")
-	protected User user;
+	@JoinColumn(name="cuenta")
+	protected Cuenta cuenta;
 
 	@ManyToOne
 	@JoinColumn(name="cp")
@@ -44,9 +44,9 @@ public class Incidente {
 	}
 
 
-	public Incidente(User user, Cp cp, BigDecimal lng, BigDecimal lat, Timestamp creacion) {
+	public Incidente(Cuenta cuenta, Cp cp, BigDecimal lng, BigDecimal lat, Timestamp creacion) {
 		super();
-		this.user = user;
+		this.cuenta = cuenta;
 		this.cp = cp;
 		this.lng = lng;
 		this.lat = lat;
@@ -64,13 +64,13 @@ public class Incidente {
 	}
 
 
-	public User getUser() {
-		return user;
+	public Cuenta getCuenta() {
+		return cuenta;
 	}
 
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setCuenta(Cuenta cuenta) {
+		this.cuenta = cuenta;
 	}
 
 

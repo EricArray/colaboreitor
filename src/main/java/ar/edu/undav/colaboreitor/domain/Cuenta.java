@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public class Cuenta {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
@@ -34,18 +34,18 @@ public class User {
 	@JoinColumn(name="cp")
 	protected Cp cp;
 
-	@OneToMany(targetEntity=Incidente.class, mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(targetEntity=Incidente.class, mappedBy="cuenta", cascade=CascadeType.ALL, orphanRemoval=true)
 	protected List<Incidente> incidentes;
 
-	@OneToMany(targetEntity=Reaccion.class, mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(targetEntity=Reaccion.class, mappedBy="cuenta", cascade=CascadeType.ALL, orphanRemoval=true)
 	protected List<Reaccion> reacciones;
 
 	
-	public User() {
+	public Cuenta() {
 		super();
 	}
 
-	public User(String username, String password, String nombre_real, Cp cp,
+	public Cuenta(String username, String password, String nombre_real, Cp cp,
 			BigDecimal lng, BigDecimal lat,
 			int dni, Timestamp creacion) {
 		super();

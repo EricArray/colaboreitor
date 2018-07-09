@@ -15,13 +15,13 @@ import ar.edu.undav.colaboreitor.domain.Foto;
 import ar.edu.undav.colaboreitor.domain.Incidente;
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.domain.Reaccion;
-import ar.edu.undav.colaboreitor.domain.User;
+import ar.edu.undav.colaboreitor.domain.Cuenta;
 import ar.edu.undav.colaboreitor.repository.CpRepo;
 import ar.edu.undav.colaboreitor.repository.FotoRepo;
 import ar.edu.undav.colaboreitor.repository.IncidenteRepo;
 import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
 import ar.edu.undav.colaboreitor.repository.ReaccionRepo;
-import ar.edu.undav.colaboreitor.repository.UserRepo;
+import ar.edu.undav.colaboreitor.repository.CuentaRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,7 +34,7 @@ public class DomainTest {
 	private CpRepo cpRepo;
 	
 	@Autowired
-	private UserRepo userRepo;
+	private CuentaRepo cuentaRepo;
 
 	@Autowired
 	private IncidenteRepo incidenteRepo;
@@ -58,16 +58,16 @@ public class DomainTest {
 				"a123bcd", localidad, new BigDecimal("1.0"), new BigDecimal("1.0"));
 		cpRepo.save(cp);
 		
-		// user
-		User user = new User(
-				"testUser", "password", "Eric", cp,
+		// cuenta
+		Cuenta cuenta = new Cuenta(
+				"testCuenta", "password", "Eric", cp,
 				new BigDecimal("0.0"), new BigDecimal("1.0"),
 				88888888, Timestamp.valueOf(LocalDateTime.now()));
-		userRepo.save(user);
+		cuentaRepo.save(cuenta);
 		
 		// incidente
 		Incidente incidente = new Incidente(
-				user, cp,
+				cuenta, cp,
 				new BigDecimal("0.0"), new BigDecimal("2.0"),
 				Timestamp.valueOf(LocalDateTime.now()));
 		incidenteRepo.save(incidente);
@@ -77,10 +77,10 @@ public class DomainTest {
 		fotoRepo.save(foto);
 		
 		// reaccion
-		Reaccion reaccion = new Reaccion(incidente, user, 1);
+		Reaccion reaccion = new Reaccion(incidente, cuenta, 1);
 		reaccionRepo.save(reaccion);
 
 		// eliminar todo
-		userRepo.deleteById(user.getId());
+		cuentaRepo.deleteById(cuenta.getId());
 	}
 }

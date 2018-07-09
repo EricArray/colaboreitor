@@ -26,8 +26,8 @@ public class Reaccion implements Serializable {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name="user")
-	protected User user;
+	@JoinColumn(name="cuenta")
+	protected Cuenta cuenta;
 	
 	protected int reaccion;
 
@@ -37,10 +37,10 @@ public class Reaccion implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Reaccion(Incidente incidente, User user, int reaccion) {
+	public Reaccion(Incidente incidente, Cuenta cuenta, int reaccion) {
 		super();
 		this.incidente = incidente;
-		this.user = user;
+		this.cuenta = cuenta;
 		this.reaccion = reaccion;
 	}
 
@@ -52,12 +52,12 @@ public class Reaccion implements Serializable {
 		this.incidente = incidente;
 	}
 
-	public User getUser() {
-		return user;
+	public Cuenta getCuenta() {
+		return cuenta;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setCuenta(Cuenta cuenta) {
+		this.cuenta = cuenta;
 	}
 
 	public int getReaccion() {
