@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.undav.colaboreitor.domain.Localidad;
@@ -17,9 +18,9 @@ public class LocalidadController {
 	@Autowired
 	private LocalidadRepo localidadRepo;
 
-    @RequestMapping("/localidad")
+    @RequestMapping(name="/", method=RequestMethod.GET)
     public String index() throws JSONException {
-        System.out.println("GET /localidad");
+        System.out.println("GET /");
         
         List<Localidad> localidades = localidadRepo.findAll();
         

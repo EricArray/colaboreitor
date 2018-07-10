@@ -21,6 +21,17 @@ public class ReaccionPk implements Serializable {
 		this.cuenta = cuenta;
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ReaccionPk) {
+			ReaccionPk u = (ReaccionPk)(o);
+			return incidente == u.incidente &&
+				   cuenta == u.cuenta;
+		} else {
+			return false;
+		}
+	}
+	
 	public Long getIncidente() {
 		return incidente;
 	}
