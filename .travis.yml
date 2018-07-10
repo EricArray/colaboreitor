@@ -1,18 +1,14 @@
 language: java
 
 addons:
-  postgresql: "10.4"
-
-sudo: true
+  postgresql: "9.6"
 
 services:
   - postgresql
 
 before_script:
-  - sudo apt-get install postgresql-10-postgis-2.4 postgis -y -q
-  - psql -c 'create database travis_ci_test;' -U postgres
   - psql -U postgres -c "create extension postgis"
 
 after_success:
-  -  mvn cobertura:cobertura coveralls:report
+  - mvn cobertura:cobertura coveralls:report
 
