@@ -5,8 +5,11 @@ services:
 
 sudo: true
 
+install:
+  - sudo apt-get install -y postgresql-9.5-postgis-2.3
+  - sudo service postgresql restart
+
 before_script:
-  - 
   - psql -U postgres -c "create extension postgis"
 
 after_success:
