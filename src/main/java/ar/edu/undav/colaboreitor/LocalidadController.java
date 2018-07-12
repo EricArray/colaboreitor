@@ -82,15 +82,70 @@ public class LocalidadController {
         	return respuesta.error("No hay localidad con id = " + id);
         }
     }
+    
+    public static class PostBody {
+    	public String nombre;
+    	public String lng;
+    	public String lat;
+    	
+		public PostBody() {
+			super();
+			// TODO Auto-generated constructor stub
+		}
+		public String getNombre() {
+			return nombre;
+		}
+		public void setNombre(String nombre) {
+			this.nombre = nombre;
+		}
+		public String getLng() {
+			return lng;
+		}
+		public void setLng(String lng) {
+			this.lng = lng;
+		}
+		public String getLat() {
+			return lat;
+		}
+		public void setLat(String lat) {
+			this.lat = lat;
+		}
+    }
 
     @RequestMapping(value="/localidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String post(@RequestBody String nombre, @RequestBody BigDecimal lng, @RequestBody BigDecimal lat) {
+    public String post(@RequestBody PostBody body) {
         System.out.println("POST /localidad");
         
-    	Localidad loc = new Localidad(nombre, lng, lat);
+    	Localidad loc = new Localidad(body.nombre, new BigDecimal(body.lng), new BigDecimal(body.lat));
     	localidadRepo.save(loc);
     	
     	return getById(loc.getId());
     }
 
+    @RequestMapping(value="/localidad/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String delete(@PathVariable long id) {
+        System.out.println("DELETE /localidad/" + id);
+        
+        Optional<Localidad> optLoc = localidadRepo.findById(id);
+        
+        if (optLoc.isPresent()) {
+            try {
+            	Localidad loc = optLoc.get();
+            	
+            	localidadRepo.delete(loc);
+            	
+    	        JSONObject[] localidad = new JSONObject[1];
+    		    localidad[0] = localidadJson(loc);
+    	        
+            	return respuesta.ok("localidad", localidad);
+            } catch (JSONException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    			return respuesta.error("Error interno al leer localidades");
+    		}
+        } else {
+        	return respuesta.error("No hay localidad con id = " + id);
+        }
+    }
+    
 }
