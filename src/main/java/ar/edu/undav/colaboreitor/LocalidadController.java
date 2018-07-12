@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,11 +37,8 @@ public class LocalidadController {
         return jsonLoc;
 	}
 
-    @RequestMapping(
-    		value="/localidad",
-    		produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-    		method = RequestMethod.GET)
-    public String all() {
+    @RequestMapping(value="/localidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String get() {
         System.out.println("GET /localidad");
         
         try {
@@ -60,11 +59,8 @@ public class LocalidadController {
 		}
     }
 
-    @RequestMapping(
-    		value="/localidad/{id}",
-    		produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
-    		method = RequestMethod.GET)
-    public String byId(@PathVariable long id) {
+    @RequestMapping(value="/localidad/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String getById(@PathVariable long id) {
         System.out.println("GET /localidad/" + id);
         
         Optional<Localidad> optLoc = localidadRepo.findById(id);
@@ -85,6 +81,16 @@ public class LocalidadController {
         } else {
         	return respuesta.error("No hay localidad con id = " + id);
         }
+    }
+
+    @RequestMapping(value="/localidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String post(@RequestBody String nombre, @RequestBody BigDecimal lng, @RequestBody BigDecimal lat) {
+        System.out.println("POST /localidad");
+        
+    	Localidad loc = new Localidad(nombre, lng, lat);
+    	localidadRepo.save(loc);
+    	
+    	return getById(loc.getId());
     }
 
 }

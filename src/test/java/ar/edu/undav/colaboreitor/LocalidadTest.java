@@ -30,12 +30,22 @@ public class LocalidadTest {
     public void before() {
     	this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
     }
-    
+
     @Test
-    public void testLocalidad() throws Exception {
+    public void getLocalidad() throws Exception {
     	this.mockMvc.perform(
 				get("/localidad").session(this.session).accept(MediaType.APPLICATION_JSON_UTF8)
 			).andExpect(status().isOk())
     		;
     }
+
+    @Test
+    public void postLocalidad() throws Exception {
+    	this.mockMvc.perform(
+				get("/localidad").session(this.session).accept(MediaType.APPLICATION_JSON_UTF8)
+			).andExpect(status().isOk())
+    		;
+    }
+    
+    
 }
