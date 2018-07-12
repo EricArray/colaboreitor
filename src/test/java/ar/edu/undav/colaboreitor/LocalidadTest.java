@@ -41,8 +41,11 @@ public class LocalidadTest {
 
     @Test
     public void postLocalidad() throws Exception {
+    	this.session.putValue("nombre", "Lanús");
+    	this.session.putValue("lng", "1.0");
+    	this.session.putValue("lat", "2.0");
     	this.mockMvc.perform(
-				get("/localidad").session(this.session).accept(MediaType.APPLICATION_JSON_UTF8)
+				post("/localidad").session(this.session).accept(MediaType.APPLICATION_JSON_UTF8)
 			).andExpect(status().isOk())
     		;
     }
