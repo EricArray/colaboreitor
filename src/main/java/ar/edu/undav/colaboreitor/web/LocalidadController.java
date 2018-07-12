@@ -1,4 +1,8 @@
-package ar.edu.undav.colaboreitor;
+package ar.edu.undav.colaboreitor.web;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,15 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class LocalidadController {

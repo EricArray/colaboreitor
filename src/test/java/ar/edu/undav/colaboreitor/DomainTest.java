@@ -11,17 +11,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ar.edu.undav.colaboreitor.domain.Cp;
+import ar.edu.undav.colaboreitor.domain.Cuenta;
 import ar.edu.undav.colaboreitor.domain.Foto;
 import ar.edu.undav.colaboreitor.domain.Incidente;
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.domain.Reaccion;
-import ar.edu.undav.colaboreitor.domain.Cuenta;
 import ar.edu.undav.colaboreitor.repository.CpRepo;
+import ar.edu.undav.colaboreitor.repository.CuentaRepo;
 import ar.edu.undav.colaboreitor.repository.FotoRepo;
 import ar.edu.undav.colaboreitor.repository.IncidenteRepo;
 import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
 import ar.edu.undav.colaboreitor.repository.ReaccionRepo;
-import ar.edu.undav.colaboreitor.repository.CuentaRepo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

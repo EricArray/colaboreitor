@@ -1,4 +1,8 @@
-package ar.edu.undav.colaboreitor;
+package ar.edu.undav.colaboreitor.web;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,18 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.undav.colaboreitor.domain.Cp;
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.repository.CpRepo;
 import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
-import ar.edu.undav.colaboreitor.repository.CpRepo;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class CpController {
@@ -30,7 +28,8 @@ public class CpController {
 	@Autowired
 	private LocalidadRepo locRepo;
 	
-	private Respuesta respuesta = new Respuesta();
+	@Autowired
+	private Respuesta respuesta;
 	
 	JSONObject cpJson(Cp cp) throws JSONException {
         JSONObject jsonCp = new JSONObject();
@@ -48,16 +47,16 @@ public class CpController {
         System.out.println("GET /cp");
         
         try {
-            List<Cp> cpes = cpRepo.findAll();
+            List<Cp> cps = cpRepo.findAll();
             
-	        JSONObject[] cps = new JSONObject[cpes.size()];
+	        JSONObject[] jsonCps = new JSONObject[cps.size()];
 	        int i = 0;
-	        for (Cp cp : cpes) {
-		        cps[i] = cpJson(cp);
+	        for (Cp cp : cps) {
+	        	jsonCps[i] = cpJson(cp);
 		        i += 1;
 	        }
 	        
-        	return respuesta.ok("cp", cps);
+        	return respuesta.ok("cp", jsonCps);
         } catch (JSONException e) {
 			// TODO Auto-generated catch bcpk
 			e.printStackTrace();
@@ -69,11 +68,11 @@ public class CpController {
     public String getById(@PathVariable String id) {
         System.out.println("GET /cp/" + id);
         
-        Optional<Cp> optLoc = cpRepo.findById(id);
+        Optional<Cp> optCp = cpRepo.findById(id);
         
-        if (optLoc.isPresent()) {
+        if (optCp.isPresent()) {
             try {
-            	Cp cp = optLoc.get();
+            	Cp cp = optCp.get();
             	
     	        JSONObject[] cps = new JSONObject[1];
     		    cps[0] = cpJson(cp);
@@ -82,7 +81,7 @@ public class CpController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcpk
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer cpes");
+    			return respuesta.error("Error interno al leer CP");
     		}
         } else {
         	return respuesta.error("No hay CP con id = " + id);

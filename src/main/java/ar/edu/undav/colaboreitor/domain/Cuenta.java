@@ -2,6 +2,7 @@ package ar.edu.undav.colaboreitor.domain;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,10 +15,14 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Cuenta {
+public class Cuenta implements Authentication {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
@@ -27,9 +32,10 @@ public class Cuenta {
 	protected String nombre_real;
 	protected BigDecimal lng;
 	protected BigDecimal lat;
-	protected int dni;
+	protected long dni;
 	protected Timestamp creacion;
-	
+    private String passwordConfirm;
+    
 	@ManyToOne
 	@JoinColumn(name="cp")
 	protected Cp cp;
@@ -47,7 +53,7 @@ public class Cuenta {
 
 	public Cuenta(String username, String password, String nombre_real, Cp cp,
 			BigDecimal lng, BigDecimal lat,
-			int dni, Timestamp creacion) {
+			long dni, Timestamp creacion) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -83,6 +89,15 @@ public class Cuenta {
 		this.password = password;
 	}
 
+    @Transient
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
 	public String getNombre_real() {
 		return nombre_real;
 	}
@@ -115,11 +130,11 @@ public class Cuenta {
 		this.lat = lat;
 	}
 
-	public int getDni() {
+	public long getDni() {
 		return dni;
 	}
 
-	public void setDni(int dni) {
+	public void setDni(long dni) {
 		this.dni = dni;
 	}
 
@@ -145,6 +160,48 @@ public class Cuenta {
 
 	public void setReacciones(List<Reaccion> reacciones) {
 		this.reacciones = reacciones;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return username;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getCredentials() {
+		// TODO Auto-generated method stub
+		return password;
+	}
+
+	@Override
+	public Object getDetails() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public Object getPrincipal() {
+		// TODO Auto-generated method stub
+		return username;
+	}
+
+	@Override
+	public boolean isAuthenticated() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -8,7 +8,7 @@ import ar.edu.undav.colaboreitor.domain.Cuenta;
 
 public interface CuentaRepo extends JpaRepository<Cuenta, Long> {
 	Optional<Cuenta> findById(Long id);
-	Optional<Cuenta> findByUsername(String username);
+	Cuenta findByUsername(String username);
 
 	Optional<Cuenta> deleteByUsername(String username);
 	

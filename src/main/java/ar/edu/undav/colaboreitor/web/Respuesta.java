@@ -1,4 +1,4 @@
-package ar.edu.undav.colaboreitor;
+package ar.edu.undav.colaboreitor.web;
 
 import org.json.JSONException;
 import org.json.JSONObject;

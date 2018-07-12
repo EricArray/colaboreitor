@@ -1,0 +1,6 @@
+:~$ curl -H "X-Authorization: username:password" http://localhost:8080/cuenta
+
+$.ajax({
+    url: 'http://localhost:8080/cuenta',
+    headers: { 'X-Authorization': 'username:password' }
+});
