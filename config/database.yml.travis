@@ -1,8 +1,0 @@
-adapter: postgresql
-database: colaboreitor
-#hostname: 127.0.0.1
-username: postgres
-password: 
-#socket: /tmp/mysql.sock
-#pool: 5
-#timeout: 5000

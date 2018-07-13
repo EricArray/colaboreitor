@@ -15,6 +15,7 @@ before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -U postgres -c "create database colaboreitor"
   - psql -U postgres -c "create extension postgis"
+  - psql -c "CREATE USER foo WITH PASSWORD 'bar';" -U postgres
 
 after_success:
   - mvn cobertura:cobertura coveralls:report
