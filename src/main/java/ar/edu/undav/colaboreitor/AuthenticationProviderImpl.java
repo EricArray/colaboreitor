@@ -22,7 +22,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         Cuenta cuenta = cuentaRepo.findByUsername(userAuthentication.getName());
         
         if(cuenta == null){
-            throw new UnknownUserException("Could not find user: " + authentication.getName());
+            throw new UnknownUserException("No se pudo encontrar cuenta: " + authentication.getName());
         }
         
         return cuenta;

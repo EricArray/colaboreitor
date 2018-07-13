@@ -68,7 +68,8 @@ public class IncidenteController {
     @RequestMapping(value="/incidente", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String get(
     		@RequestParam(value = "pos", required = false) String pos,
-    		@RequestParam(value = "nombre", required = false) String nombre
+    		@RequestParam(value = "nombre", required = false) String nombre,
+    		@RequestParam(value = "localidad", required = false) Long localidad
     		) {
         System.out.println("GET /incidente");
         
@@ -86,6 +87,8 @@ public class IncidenteController {
         		incidentes = incidenteRepo.findNear(lng, lat, 2000);
         	} else if (nombre != null) {
         		incidentes = incidenteRepo.findLikeNombre(nombre);
+        	} else if (localidad != null) {
+        		incidentes = incidenteRepo.findByLocalidad(localidad);
         	} else {
         		incidentes = incidenteRepo.findAll();
         	}
@@ -101,7 +104,7 @@ public class IncidenteController {
         } catch (JSONException e) {
 			// TODO Auto-generated catch bcpk
 			e.printStackTrace();
-			return respuesta.error("Error interno al leer Incidente");
+			return respuesta.requestError("Error interno al leer Incidente");
 		}
     }
 
@@ -122,10 +125,10 @@ public class IncidenteController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcpk
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer Incidente");
+    			return respuesta.requestError("Error interno al leer Incidente");
     		}
         } else {
-        	return respuesta.error("No hay Incidente con id = " + id);
+        	return respuesta.requestError("No hay Incidente con id = " + id);
         }
     }
     
@@ -199,7 +202,7 @@ public class IncidenteController {
         	
         	return getById(incidente.getId());    	
         } else {
-        	return respuesta.error("No hay CP = " + body.cp);
+        	return respuesta.requestError("No hay CP = " + body.cp);
         }
     }
 

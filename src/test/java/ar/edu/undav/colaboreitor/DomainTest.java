@@ -67,7 +67,7 @@ public class DomainTest {
 		
 		// incidente
 		Incidente incidente = new Incidente(
-				cuenta, cp,
+				cuenta, cp, "testIncidente",
 				new BigDecimal("0.0"), new BigDecimal("2.0"),
 				Timestamp.valueOf(LocalDateTime.now()));
 		incidenteRepo.save(incidente);

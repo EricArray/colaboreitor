@@ -60,7 +60,7 @@ public class CpController {
         } catch (JSONException e) {
 			// TODO Auto-generated catch bcpk
 			e.printStackTrace();
-			return respuesta.error("Error interno al leer CP");
+			return respuesta.requestError("Error interno al leer CP");
 		}
     }
 
@@ -81,10 +81,10 @@ public class CpController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcpk
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer CP");
+    			return respuesta.requestError("Error interno al leer CP");
     		}
         } else {
-        	return respuesta.error("No hay CP con id = " + id);
+        	return respuesta.requestError("No hay CP con id = " + id);
         }
     }
     
@@ -129,7 +129,7 @@ public class CpController {
         	cpRepo.save(cp);    
         	return getById(cp.getCp());    	
         } else {
-        	return respuesta.error("No hay localidad con id = " + body.localidad);
+        	return respuesta.requestError("No hay localidad con id = " + body.localidad);
         }
     }
 
@@ -151,10 +151,10 @@ public class CpController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcpk
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer CP");
+    			return respuesta.requestError("Error interno al leer CP");
     		}
         } else {
-        	return respuesta.error("No hay CP con id = " + id);
+        	return respuesta.requestError("No hay CP con id = " + id);
         }
     }
     

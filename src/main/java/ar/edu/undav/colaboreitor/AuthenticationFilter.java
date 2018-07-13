@@ -38,7 +38,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         
         // validate the value in xAuth
         if(isValid(username, password) == false){
-            throw new SecurityException("Invalid user or password");
+            throw new SecurityException("Usuario o password invalidos");
         }                            
         
         // Create our Authentication and let Spring know about it

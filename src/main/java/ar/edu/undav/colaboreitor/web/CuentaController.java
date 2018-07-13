@@ -57,10 +57,10 @@ public class CuentaController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcuentak
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer CP");
+    			return respuesta.requestError("Error interno al leer CP");
     		}
         } else {
-        	return respuesta.error("No hay Cuenta con id = " + id);
+        	return respuesta.requestError("No hay Cuenta con id = " + id);
         }
     }
     
@@ -135,7 +135,7 @@ public class CuentaController {
         	cuentaRepo.save(cuenta);    
         	return get();    	
         } else {
-        	return respuesta.error("No hay cuenta");
+        	return respuesta.requestError("No hay cuenta");
         }
     }
 }

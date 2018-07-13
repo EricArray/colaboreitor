@@ -54,7 +54,7 @@ public class LocalidadController {
         } catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return respuesta.error("Error interno al leer localidades");
+			return respuesta.internalError("Error interno al leer localidades");
 		}
     }
 
@@ -75,10 +75,10 @@ public class LocalidadController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer localidades");
+    			return respuesta.internalError("Error interno al leer localidades");
     		}
         } else {
-        	return respuesta.error("No hay localidad con id = " + id);
+        	return respuesta.requestError("No hay localidad con id = " + id);
         }
     }
     
@@ -140,10 +140,10 @@ public class LocalidadController {
             } catch (JSONException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
-    			return respuesta.error("Error interno al leer localidades");
+    			return respuesta.internalError("Error interno al leer localidades");
     		}
         } else {
-        	return respuesta.error("No hay localidad con id = " + id);
+        	return respuesta.requestError("No hay localidad con id = " + id);
         }
     }
     

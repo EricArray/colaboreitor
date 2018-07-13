@@ -8,21 +8,30 @@ import org.springframework.data.jpa.repository.Query;
 
 import ar.edu.undav.colaboreitor.domain.Incidente;
 import ar.edu.undav.colaboreitor.domain.Localidad;
+import ar.edu.undav.colaboreitor.domain.Cp;
+import ar.edu.undav.colaboreitor.repository.CpRepo;
 
 public interface IncidenteRepo extends JpaRepository<Incidente, Long> {
 
-	List<Incidente> findByLocalidad(Localidad localidad);
+	@Query(
+			value = "select i from cp c, incidente i where c.localidad = ?1 and i.cp = c.cp",
+			nativeQuery = true)
+	List<Incidente> findByLocalidad(long localidad);
 
-	@Query("select i from incidente i where nombre like '%?1%'")
+	@Query(
+			value = "select i from incidente i where nombre like '%?1%'",
+			nativeQuery = true)
 	List<Incidente> findLikeNombre(String nombre);
 
 	@Query(
+		value =
 		"select i " +
 	    "from incidente i " +
 	    "where ST_Distance_Sphere(" +
 	    	"ST_GeomFromText(" +
 	    		"'POINT(' || CAST(lng AS VARCHAR(12)) || ', ' || CAST(lat AS VARCHAR(12)) || ')'" +
-	    	"), ST_GeomFromText('POINT(?1, ?2))) < ?3"
+	    	"), ST_GeomFromText('POINT(?1, ?2)')) < ?3",
+    	nativeQuery = true
     )
 	List<Incidente> findNear(BigDecimal lng, BigDecimal lat, double maxDist);
 }

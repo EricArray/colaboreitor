@@ -46,7 +46,7 @@ public class CuentaTest {
     			"{\"username\":\"eric\",\"password\":\"pass\",\"nombre_real\":\"Eric\",\"cp\":\"a1234bcd\",\"dni\":\"88888888\",\"lng\":\"1.0\",\"lat\":\"1.0\"}";
     	
     	this.mockMvc.perform(
-				post("/cp")
+				post("/cuenta")
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
 					.content(requestBody)
 					.session(this.session)

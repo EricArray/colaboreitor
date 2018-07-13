@@ -73,7 +73,7 @@ public class ReaccionController {
         } catch (JSONException e) {
 			// TODO Auto-generated catch bcpk
 			e.printStackTrace();
-			return respuesta.error("Error interno al leer Reaccion");
+			return respuesta.internalError("Error interno al leer Reaccion");
 		}
     }
 
@@ -120,7 +120,7 @@ public class ReaccionController {
         	
         	return get();    	
         } else {
-        	return respuesta.error("No hay Incidente con id = " + body.incidente);
+        	return respuesta.requestError("No hay Incidente con id = " + body.incidente);
         }
     }
 
