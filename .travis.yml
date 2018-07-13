@@ -1,16 +1,15 @@
 language: java
 
 services:
-  - postgresql
+  postgresql:
+    ports:
+      - "5432"
 
 addons:
   postgresql: "9.6"
   apt:
     packages:
       - postgresql-9.6-postgis-2.3
-env:
-  global:
-  - PGPORT=5432
 
 before_script:
   - psql -U postgres -c "create database colaboreitor"
