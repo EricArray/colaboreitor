@@ -77,7 +77,7 @@ public class CpController {
     	        JSONObject[] cps = new JSONObject[1];
     		    cps[0] = cpJson(cp);
     	        
-            	return respuesta.ok("cp", cp);
+            	return respuesta.ok("cp", cps);
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcpk
     			e.printStackTrace();

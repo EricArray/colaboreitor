@@ -27,6 +27,7 @@ public class Incidente {
 	@JoinColumn(name="cp")
 	protected Cp cp;
 	
+	protected String nombre;
 	protected BigDecimal lng;
 	protected BigDecimal lat;
 	protected Timestamp creacion;
@@ -44,9 +45,10 @@ public class Incidente {
 	}
 
 
-	public Incidente(Cuenta cuenta, Cp cp, BigDecimal lng, BigDecimal lat, Timestamp creacion) {
+	public Incidente(Cuenta cuenta, Cp cp, String nombre, BigDecimal lng, BigDecimal lat, Timestamp creacion) {
 		super();
 		this.cuenta = cuenta;
+		this.nombre = nombre;
 		this.cp = cp;
 		this.lng = lng;
 		this.lat = lat;
@@ -81,6 +83,16 @@ public class Incidente {
 
 	public void setCp(Cp cp) {
 		this.cp = cp;
+	}
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 
@@ -131,6 +143,15 @@ public class Incidente {
 
 	public void setFotos(List<Foto> fotos) {
 		this.fotos = fotos;
+	}
+
+
+	public int getPuntos() {
+		int puntos = 0;
+		for (Reaccion r : reacciones) {
+			puntos += r.reaccion;
+		}
+		return puntos;
 	}
 	
 	
