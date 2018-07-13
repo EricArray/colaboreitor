@@ -23,6 +23,11 @@ import org.springframework.security.core.GrantedAuthority;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Cuenta implements Authentication {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
@@ -189,7 +194,7 @@ public class Cuenta implements Authentication {
 	@Override
 	public Object getPrincipal() {
 		// TODO Auto-generated method stub
-		return username;
+		return this;
 	}
 
 	@Override
@@ -203,6 +208,10 @@ public class Cuenta implements Authentication {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.username;
+	}
 	
 }

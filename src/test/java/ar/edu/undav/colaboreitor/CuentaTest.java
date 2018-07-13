@@ -14,6 +14,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -34,10 +36,13 @@ public class CuentaTest {
 
     @Test
     public void testGet() throws Exception {
-    	this.mockMvc.perform(
-				get("/cuenta").session(this.session).accept(MediaType.APPLICATION_JSON_UTF8)
-			).andExpect(status().isOk())
-    		;
+    	MockHttpServletRequestBuilder builder = get("/cuenta");
+    	builder.session(this.session);
+    	builder.accept(MediaType.APPLICATION_JSON_UTF8);
+    	builder.header("X-Authorization", "user:pass");
+    			
+    	ResultActions r = this.mockMvc.perform(builder);
+    	r.andExpect(status().isOk());
     }
 
     @Test

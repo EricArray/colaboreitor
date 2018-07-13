@@ -23,15 +23,16 @@ public class LocalidadController {
 	@Autowired
 	private LocalidadRepo localidadRepo;
 	
-	private Respuesta respuesta = new Respuesta();
+	@Autowired
+	private Respuesta respuesta;
 	
 	JSONObject localidadJson(Localidad loc) throws JSONException {
         JSONObject jsonLoc = new JSONObject();
         
         jsonLoc.put("id", loc.getId());
         jsonLoc.put("nombre", loc.getNombre());
-        jsonLoc.put("lng", loc.getLng());
-        jsonLoc.put("lat", loc.getLat());
+        jsonLoc.put("lng", loc.getLng().toString());
+        jsonLoc.put("lat", loc.getLat().toString());
         
         return jsonLoc;
 	}

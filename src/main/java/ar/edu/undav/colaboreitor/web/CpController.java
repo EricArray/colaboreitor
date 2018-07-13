@@ -36,8 +36,8 @@ public class CpController {
         
         jsonCp.put("cp", cp.getCp());
         jsonCp.put("localidad", cp.getLocalidad().getId());
-        jsonCp.put("lng", cp.getLng());
-        jsonCp.put("lat", cp.getLat());
+        jsonCp.put("lng", cp.getLng().toString());
+        jsonCp.put("lat", cp.getLat().toString());
         
         return jsonCp;
 	}

@@ -26,19 +26,28 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         
+    	if (request.getRequestURI().equals("/cuenta") && request.getMethod().equals("POST")) {
+            filterChain.doFilter(request, response);
+            return;
+    	}
+    	
         String xAuth = request.getHeader("X-Authorization");
         
         if (xAuth == null) {
-            throw new SecurityException();
+            //throw new SecurityException();
+        	System.out.println("No X-Authorization header");
+        	return;
         }
-        
+
         int colon = xAuth.indexOf(':');
         String username = xAuth.substring(0, colon);
         String password = xAuth.substring(colon + 1);
         
         // validate the value in xAuth
         if(isValid(username, password) == false){
-            throw new SecurityException("Usuario o password invalidos");
+            //throw new SecurityException("Usuario o password invalidos");
+        	System.out.println("Wrong user/pass");
+        	return;
         }                            
         
         // Create our Authentication and let Spring know about it

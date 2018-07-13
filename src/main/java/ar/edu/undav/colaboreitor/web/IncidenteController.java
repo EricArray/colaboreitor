@@ -48,19 +48,22 @@ public class IncidenteController {
         JSONObject json = new JSONObject();
 
         json.put("id", incidente.getId());
-        json.put("cp", incidente.getCp());
-        json.put("lng", incidente.getLng());
-        json.put("lat", incidente.getLat());
+        json.put("cp", incidente.getCp().getCp());
+        json.put("lng", incidente.getLng().toString());
+        json.put("lat", incidente.getLat().toString());
         json.put("creacion", incidente.getCreacion());
         json.put("puntos", incidente.getPuntos());
-        
-        String[] pathFotos = new String[incidente.getFotos().size()];
-        int i = 0;
-        for (Foto foto : incidente.getFotos()) {
-        	pathFotos[i] = foto.getPath();
-        	i ++;
+
+        if (incidente.getFotos() != null) {
+        	String[] pathFotos;
+	        pathFotos = new String[incidente.getFotos().size()];
+	        int i = 0;
+	        for (Foto foto : incidente.getFotos()) {
+	        	pathFotos[i] = foto.getPath();
+	        	i ++;
+	        }
+		    json.put("fotos", pathFotos);
         }
-        json.put("fotos", pathFotos);
         
         return json;
 	}
@@ -199,6 +202,8 @@ public class IncidenteController {
         		Foto foto = new Foto(incidente, pathFoto);
         		fotoRepo.save(foto);
         	}
+        	
+        	incidenteRepo.flush();
         	
         	return getById(incidente.getId());    	
         } else {

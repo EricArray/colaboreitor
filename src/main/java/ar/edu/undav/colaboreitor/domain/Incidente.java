@@ -148,8 +148,10 @@ public class Incidente {
 
 	public int getPuntos() {
 		int puntos = 0;
-		for (Reaccion r : reacciones) {
-			puntos += r.reaccion;
+		if (reacciones != null) {
+			for (Reaccion r : reacciones) {
+				puntos += r.reaccion;
+			}
 		}
 		return puntos;
 	}

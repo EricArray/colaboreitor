@@ -25,15 +25,15 @@ public class CuentaController {
 	@Autowired private CuentaRepo cuentaRepo;
 	@Autowired private CpRepo cpRepo;
 
-	private Respuesta respuesta = new Respuesta();
+	@Autowired private Respuesta respuesta;
 	
 	JSONObject cuentaJson(Cuenta cuenta) throws JSONException {
         JSONObject json = new JSONObject();
         
         json.put("id", cuenta.getId());
         json.put("cp", cuenta.getCp().getCp());
-        json.put("lng", cuenta.getLng());
-        json.put("lat", cuenta.getLat());
+        json.put("lng", cuenta.getLng().toString());
+        json.put("lat", cuenta.getLat().toString());
         
         return json;
 	}
@@ -42,25 +42,17 @@ public class CuentaController {
     public String get() {
         System.out.println("GET /cuenta");
         
-        long id = 0;
-        
-        Optional<Cuenta> optCuenta = cuentaRepo.findById(id);
-        
-        if (optCuenta.isPresent()) {
+        Cuenta cuenta = respuesta.getCuenta();
+        if (cuenta != null) {
             try {
-            	Cuenta cuenta = optCuenta.get();
-            	
-    	        JSONObject[] cuentas = new JSONObject[1];
-    		    cuentas[0] = cuentaJson(cuenta);
-    	        
-            	return respuesta.ok("cuenta", cuenta);
+            	return respuesta.ok("cuenta", cuentaJson(cuenta));
             } catch (JSONException e) {
     			// TODO Auto-generated catch bcuentak
     			e.printStackTrace();
-    			return respuesta.requestError("Error interno al leer CP");
+    			return respuesta.internalError("Error interno al leer cuenta");
     		}
         } else {
-        	return respuesta.requestError("No hay Cuenta con id = " + id);
+        	return respuesta.internalError("Error interno al leer cuenta");
         }
     }
     
@@ -132,10 +124,17 @@ public class CuentaController {
         			cp, new BigDecimal(body.lng), new BigDecimal(body.lat), dni,
         			Timestamp.valueOf(LocalDateTime.now())
         			);
-        	cuentaRepo.save(cuenta);    
-        	return get();    	
+        	cuentaRepo.save(cuenta);  
+
+            try {
+            	return respuesta.created("cuenta", cuentaJson(cuenta));
+            } catch (JSONException e) {
+    			// TODO Auto-generated catch bcuentak
+    			e.printStackTrace();
+    			return respuesta.internalError("Error interno al leer cuenta");
+    		}
         } else {
-        	return respuesta.requestError("No hay cuenta");
+        	return respuesta.requestError("No hay CP = " + body.cp);
         }
     }
 }

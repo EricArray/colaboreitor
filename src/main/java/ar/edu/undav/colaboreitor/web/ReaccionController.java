@@ -57,8 +57,10 @@ public class ReaccionController {
         System.out.println("GET /reaccion");
         
         try {
-        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        	Cuenta cuenta = (Cuenta) auth.getDetails();
+        	Cuenta cuenta = respuesta.getCuenta();
+        	if (cuenta == null) {
+        		return respuesta.internalError("Error interno al leer cuenta");
+        	}
         	
             List<Reaccion> reacciones = reaccionRepo.findByCuenta(cuenta);
             
@@ -111,9 +113,13 @@ public class ReaccionController {
         Optional<Incidente> opt = incidenteRepo.findById(body.incidente);
         if (opt.isPresent()) {
         	Incidente incidente = opt.get();
+        	Cuenta cuenta = respuesta.getCuenta();
+        	if (cuenta == null) {
+            	return respuesta.internalError("Error interno al leer cuenta");
+        	}
         	
-        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        	Cuenta cuenta = (Cuenta) auth.getDetails();
+        	System.out.println("incidente: " + incidente.getId());
+        	System.out.println("cuenta: " + cuenta.getId());
         	
         	Reaccion reaccion = new Reaccion(incidente, cuenta, body.reaccion);
         	reaccionRepo.save(reaccion);    

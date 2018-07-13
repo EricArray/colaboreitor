@@ -8,14 +8,14 @@ public class ReaccionPk implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected Long incidente;
-	protected Long cuenta;
+	protected long incidente;
+	protected long cuenta;
 	
 	
 	public ReaccionPk() {
 		super();
 	}
-	public ReaccionPk(Long incidente, Long cuenta) {
+	public ReaccionPk(long incidente, long cuenta) {
 		super();
 		this.incidente = incidente;
 		this.cuenta = cuenta;
@@ -32,16 +32,16 @@ public class ReaccionPk implements Serializable {
 		}
 	}
 	
-	public Long getIncidente() {
+	public long getIncidente() {
 		return incidente;
 	}
-	public void setIncidente(Long incidente) {
+	public void setIncidente(long incidente) {
 		this.incidente = incidente;
 	}
-	public Long getCuenta() {
+	public long getCuenta() {
 		return cuenta;
 	}
-	public void setCuenta(Long cuenta) {
+	public void setCuenta(long cuenta) {
 		this.cuenta = cuenta;
 	}
 	public static long getSerialversionuid() {
