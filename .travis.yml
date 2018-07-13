@@ -10,7 +10,7 @@ addons:
       - postgresql-9.6-postgis-2.3
 env:
   global:
-  - PGPORT=5433
+  - PGPORT=5432
 
 before_script:
   - psql -U postgres -c "create database colaboreitor"
