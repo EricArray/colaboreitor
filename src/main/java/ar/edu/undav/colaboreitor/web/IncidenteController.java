@@ -6,12 +6,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +24,9 @@ import ar.edu.undav.colaboreitor.domain.Cp;
 import ar.edu.undav.colaboreitor.domain.Cuenta;
 import ar.edu.undav.colaboreitor.domain.Foto;
 import ar.edu.undav.colaboreitor.domain.Incidente;
-import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.repository.CpRepo;
 import ar.edu.undav.colaboreitor.repository.FotoRepo;
 import ar.edu.undav.colaboreitor.repository.IncidenteRepo;
-import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
 
 @RestController
 public class IncidenteController {
@@ -55,12 +54,9 @@ public class IncidenteController {
         json.put("puntos", incidente.getPuntos());
 
         if (incidente.getFotos() != null) {
-        	String[] pathFotos;
-	        pathFotos = new String[incidente.getFotos().size()];
-	        int i = 0;
+        	JSONArray pathFotos = new JSONArray();
 	        for (Foto foto : incidente.getFotos()) {
-	        	pathFotos[i] = foto.getPath();
-	        	i ++;
+	        	pathFotos.put(foto.getPath());
 	        }
 		    json.put("fotos", pathFotos);
         }
@@ -69,67 +65,53 @@ public class IncidenteController {
 	}
 
     @RequestMapping(value="/incidente", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String get(
+    public ResponseEntity<String> get(
     		@RequestParam(value = "pos", required = false) String pos,
     		@RequestParam(value = "nombre", required = false) String nombre,
     		@RequestParam(value = "localidad", required = false) Long localidad
-    		) {
+    		) throws JSONException {
         System.out.println("GET /incidente");
         
-        try {
-        	List<Incidente> incidentes;
-        	
-        	if (pos != null) {
-        		int comma = pos.indexOf(',');
-        		String x = pos.substring(0, comma);
-        		String y = pos.substring(comma + 1);
-        		
-        		BigDecimal lng = new BigDecimal(x);
-        		BigDecimal lat = new BigDecimal(y);
-        		
-        		incidentes = incidenteRepo.findNear(lng, lat, 2000);
-        	} else if (nombre != null) {
-        		incidentes = incidenteRepo.findLikeNombre(nombre);
-        	} else if (localidad != null) {
-        		incidentes = incidenteRepo.findByLocalidad(localidad);
-        	} else {
-        		incidentes = incidenteRepo.findAll();
-        	}
-        	
-	        JSONObject[] json = new JSONObject[incidentes.size()];
-	        int i = 0;
-	        for (Incidente incidente : incidentes) {
-	        	json[i] = incidenteJson(incidente);
-		        i += 1;
-	        }
-	        
-        	return respuesta.ok("incidente", json);
-        } catch (JSONException e) {
-			// TODO Auto-generated catch bcpk
-			e.printStackTrace();
-			return respuesta.requestError("Error interno al leer Incidente");
-		}
+    	List<Incidente> incidentes;
+    	
+    	if (pos != null) {
+    		int comma = pos.indexOf(',');
+    		String x = pos.substring(0, comma);
+    		String y = pos.substring(comma + 1);
+    		
+    		BigDecimal lng = new BigDecimal(x);
+    		BigDecimal lat = new BigDecimal(y);
+    		
+    		incidentes = incidenteRepo.findNear(lng, lat, 2000);
+    	} else if (nombre != null) {
+    		incidentes = incidenteRepo.findLikeNombre(nombre);
+    	} else if (localidad != null) {
+    		incidentes = incidenteRepo.findByLocalidad(localidad);
+    	} else {
+    		incidentes = incidenteRepo.findAll();
+    	}
+    	
+        JSONArray arr = new JSONArray();
+        for (Incidente incidente : incidentes) {
+        	arr.put(incidenteJson(incidente));
+        }
+        
+    	return respuesta.ok("incidente", arr);
     }
 
     @RequestMapping(value="/incidente/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String getById(@PathVariable Long id) {
+    public ResponseEntity<String> getById(@PathVariable Long id) throws JSONException {
         System.out.println("GET /incidente/" + id);
         
         Optional<Incidente> opt = incidenteRepo.findById(id);
         
         if (opt.isPresent()) {
-            try {
-            	Incidente it = opt.get();
-            	
-    	        JSONObject[] json = new JSONObject[1];
-    	        json[0] = incidenteJson(it);
-    	        
-            	return respuesta.ok("incidente", json);
-            } catch (JSONException e) {
-    			// TODO Auto-generated catch bcpk
-    			e.printStackTrace();
-    			return respuesta.requestError("Error interno al leer Incidente");
-    		}
+        	Incidente it = opt.get();
+
+            JSONArray arr = new JSONArray();
+            arr.put(incidenteJson(it));
+	        
+        	return respuesta.ok("incidente", arr);
         } else {
         	return respuesta.requestError("No hay Incidente con id = " + id);
         }
@@ -182,15 +164,14 @@ public class IncidenteController {
     }
 
     @RequestMapping(value="/incidente", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String post(@RequestBody PostBody body) {
+    public ResponseEntity<String> post(@RequestBody PostBody body) throws JSONException {
         System.out.println("POST /incidente");
         
         Optional<Cp> opt = cpRepo.findById(body.cp);
         if (opt.isPresent()) {
         	Cp cp = opt.get();
         	
-        	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        	Cuenta cuenta = (Cuenta) auth.getDetails();
+        	Cuenta cuenta = respuesta.getCuenta();
         	
         	Incidente incidente = new Incidente(
         			cuenta, cp, body.nombre,
@@ -204,8 +185,11 @@ public class IncidenteController {
         	}
         	
         	incidenteRepo.flush();
-        	
-        	return getById(incidente.getId());    	
+
+            JSONArray arr = new JSONArray();
+            arr.put(incidenteJson(incidente));
+	        
+        	return respuesta.conStatus(HttpStatus.CREATED, "incidente", arr);
         } else {
         	return respuesta.requestError("No hay CP = " + body.cp);
         }

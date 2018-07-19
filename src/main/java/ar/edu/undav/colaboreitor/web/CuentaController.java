@@ -8,7 +8,9 @@ import java.util.Optional;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,18 +41,12 @@ public class CuentaController {
 	}
 
     @RequestMapping(value="/cuenta", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String get() {
+    public ResponseEntity<String> get() throws JSONException {
         System.out.println("GET /cuenta");
         
         Cuenta cuenta = respuesta.getCuenta();
         if (cuenta != null) {
-            try {
-            	return respuesta.ok("cuenta", cuentaJson(cuenta));
-            } catch (JSONException e) {
-    			// TODO Auto-generated catch bcuentak
-    			e.printStackTrace();
-    			return respuesta.internalError("Error interno al leer cuenta");
-    		}
+        	return respuesta.ok("cuenta", cuentaJson(cuenta));
         } else {
         	return respuesta.internalError("Error interno al leer cuenta");
         }
@@ -113,7 +109,7 @@ public class CuentaController {
     }
 
     @RequestMapping(value="/cuenta", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String post(@RequestBody PostBody body) {
+    public ResponseEntity<String> post(@RequestBody PostBody body) throws JSONException {
         System.out.println("POST /cuenta");
         
         Optional<Cp> optCp = cpRepo.findById(body.cp);
@@ -126,13 +122,7 @@ public class CuentaController {
         			);
         	cuentaRepo.save(cuenta);  
 
-            try {
-            	return respuesta.created("cuenta", cuentaJson(cuenta));
-            } catch (JSONException e) {
-    			// TODO Auto-generated catch bcuentak
-    			e.printStackTrace();
-    			return respuesta.internalError("Error interno al leer cuenta");
-    		}
+        	return respuesta.conStatus(HttpStatus.CREATED, "cuenta", cuentaJson(cuenta));
         } else {
         	return respuesta.requestError("No hay CP = " + body.cp);
         }

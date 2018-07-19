@@ -1,8 +1,13 @@
 package ar.edu.undav.colaboreitor.web;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,29 +20,33 @@ import ar.edu.undav.colaboreitor.repository.CuentaRepo;
 public class Respuesta {
 	@Autowired
 	public CuentaRepo cuentaRepo;
+
+	public ResponseEntity<String> conStatus(HttpStatus status, String nombre, Object valor) throws JSONException {
+		JSONObject r = new JSONObject();
+		r.put("status", status.value());
+		r.put("timestamp", Timestamp.valueOf(LocalDateTime.now()));
+		r.put(nombre, valor);
+		return ResponseEntity.status(status).body(r.toString());
+	}
+
+	public ResponseEntity<String> ok(String nombre, Object valor) throws JSONException {
+		return conStatus(HttpStatus.OK, nombre, valor);
+	}
 	
-	public String ok(String nombre, Object valor) throws JSONException {
+	public ResponseEntity<String> requestError(String reason) throws JSONException {
 		JSONObject r = new JSONObject();
-		r.put("status", 200);
-		r.put(nombre, valor);
-		return r.toString();
+		r.put("status", 400);
+		r.put("timestamp", Timestamp.valueOf(LocalDateTime.now()));
+		r.put("reason", reason);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(r.toString());
 	}
 
-	public String created(String nombre, Object valor) throws JSONException {
+	public ResponseEntity<String> internalError(String reason) throws JSONException {
 		JSONObject r = new JSONObject();
-		r.put("status", 201);
-		r.put(nombre, valor);
-		return r.toString();
-	}
-
-	public String requestError(String reason) {
-		final String template = "{\"status\":400,\"reason\":\"%s\"}";
-		return String.format(template, reason);
-	}
-
-	public String internalError(String reason) {
-		final String template = "{\"status\":500,\"reason\":\"%s\"}";
-		return String.format(template, reason);
+		r.put("status", 500);
+		r.put("timestamp", Timestamp.valueOf(LocalDateTime.now()));
+		r.put("reason", reason);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(r.toString());
 	}
 	
 	public Cuenta getCuenta() {
@@ -53,7 +62,6 @@ public class Respuesta {
     	String username = principal.toString();
     	if (username == null) return null;
     	
-    	Cuenta cuenta = cuentaRepo.findByUsername(username);
-    	return cuenta;
+    	return cuentaRepo.findByUsername(username);
 	}
 }

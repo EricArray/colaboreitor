@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import ar.edu.undav.colaboreitor.domain.Incidente;
-import ar.edu.undav.colaboreitor.domain.Localidad;
-import ar.edu.undav.colaboreitor.domain.Cp;
-import ar.edu.undav.colaboreitor.repository.CpRepo;
 
 public interface IncidenteRepo extends JpaRepository<Incidente, Long> {
 

@@ -50,7 +50,7 @@ public class LocalidadTest {
 					.content(requestBody)
 					.session(this.session)
 					.accept(MediaType.APPLICATION_JSON_UTF8)
-			).andExpect(status().isOk());
+			).andExpect(status().isCreated());
     }
     
     

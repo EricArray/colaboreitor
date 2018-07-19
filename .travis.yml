@@ -3,7 +3,7 @@ language: java
 services:
   postgresql:
     ports:
-      - "5432"
+      - "5433"
 
 addons:
   postgresql: "9.6"
@@ -11,7 +11,10 @@ addons:
     packages:
       - postgresql-9.6-postgis-2.3
 
+sudo: true
+
 before_script:
+  - sudo netstat -tupan
   - psql -U postgres -c "create database colaboreitor"
   - psql -U postgres -c "create extension postgis"
   - psql -c "CREATE USER foo WITH PASSWORD 'bar';" -U postgres
