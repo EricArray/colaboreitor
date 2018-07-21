@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.undav.colaboreitor.domain.Cuenta;
@@ -106,9 +107,7 @@ public class ReaccionController {
 
 	        return respuesta.conStatus(HttpStatus.CREATED, "reaccion", arr);
         } else {
-	        return respuesta.conStatus(HttpStatus.ALREADY_REPORTED, "reaccion", "jaja");
-        	//return respuesta.requestError("No hay Incidente con id = " + body.incidente);
+        	return respuesta.requestError("No hay Incidente con id = " + body.incidente);
         }
     }
-
 }

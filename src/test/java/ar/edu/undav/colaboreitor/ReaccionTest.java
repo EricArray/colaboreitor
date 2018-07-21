@@ -2,6 +2,11 @@ package ar.edu.undav.colaboreitor;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import org.json.JSONObject;
@@ -13,13 +18,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import ar.edu.undav.colaboreitor.domain.Cp;
+import ar.edu.undav.colaboreitor.domain.Cuenta;
+import ar.edu.undav.colaboreitor.domain.Incidente;
+import ar.edu.undav.colaboreitor.domain.Localidad;
+import ar.edu.undav.colaboreitor.repository.CpRepo;
+import ar.edu.undav.colaboreitor.repository.CuentaRepo;
 import ar.edu.undav.colaboreitor.repository.IncidenteRepo;
+import ar.edu.undav.colaboreitor.repository.LocalidadRepo;
 
 
 @RunWith(SpringRunner.class)
@@ -31,6 +46,9 @@ public class ReaccionTest {
     @Autowired MockHttpServletRequest request;
     
     private MockMvc mockMvc;
+	@Autowired CuentaRepo cuentaRepo;
+	@Autowired LocalidadRepo localidadRepo;
+	@Autowired CpRepo cpRepo;
 	@Autowired IncidenteRepo incidenteRepo;
 
     @Before
@@ -51,66 +69,35 @@ public class ReaccionTest {
 
     @Test
     public void testPost() throws Exception {
-    	String cp;
-    	long incidenteId;
+    	Localidad loc = new Localidad("ReaccionTest_Localidad", new BigDecimal("1.0"), new BigDecimal("1.0"));
+    	localidadRepo.saveAndFlush(loc);
+    	
+    	Cp cp = new Cp("a2222aaa", loc, new BigDecimal("1.0"), new BigDecimal("1.0"));
+    	cpRepo.saveAndFlush(cp);
+
+    	Cuenta cuenta = new Cuenta("ReaccionTest_Cuenta", "pass", "RTC", cp, new BigDecimal("1.0"), new BigDecimal("1.0"), 0, Timestamp.valueOf(LocalDateTime.now()));
+    	cuentaRepo.saveAndFlush(cuenta);
+    	
+    	Incidente incidente = new Incidente(cuenta, cp, "ReaccionTest_Incidente", new BigDecimal("1.0"), new BigDecimal("1.0"), Timestamp.valueOf(LocalDateTime.now()));
+    	incidenteRepo.saveAndFlush(incidente);
+    	
+    	long incidenteId = incidente.getId();
     	
     	{
-	    	final String requestBody = "{\"cp\":\"a2222aaa\",\"localidad\":1,\"lng\":\"1.0\",\"lat\":\"1.0\"}";
-	    	
-	    	MvcResult ret = this.mockMvc.perform(
-					post("/cp")
-						.contentType(MediaType.APPLICATION_JSON_UTF8)
-						.content(requestBody)
-						.session(this.session)
-						.accept(MediaType.APPLICATION_JSON_UTF8)
-				).andExpect(status().isCreated())
-	    			.andReturn();
-
-	    	String response = ret.getResponse().getContentAsString();
-	    	JSONObject json = new JSONObject(response);
-	    	cp = json.getJSONArray("cp")
-	    			.getJSONObject(0)
-	    			.getString("cp");
-    	}
-    	
-    	{
-	    	final String requestBody = "{" +
-	    			"\"cp\":\"" + cp + "\"," +
-	    			"\"localidad\":1," +
-	    			"\"lng\":\"1.0\",\"lat\":\"1.0\"," +
-	    			"\"fotos\":[\"https://imgur.com/iBRE7Dj\"]" +
-	    			"}";
-
-	    	//this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	    	
-	    	MvcResult ret = this.mockMvc.perform(
-					post("/incidente")
-						.contentType(MediaType.APPLICATION_JSON_UTF8)
-						.content(requestBody)
-						.session(this.session)
-						.accept(MediaType.APPLICATION_JSON_UTF8)
-				).andExpect(status().isCreated()).andReturn();
-	    	
-	    	JSONObject json = new JSONObject(ret.getResponse().getContentAsString());
-	    	
-	    	incidenteId = json.getJSONArray("incidente").getJSONObject(0).getLong("id");
-    	}
-    	
-    	{
-	    	final String requestBody = "{" +
-	    			"\"incidente\":" + incidenteId + "," +
-	    			"\"reaccion\":1" +
-	    			"}";
-
+    		String requestBody = "{\"incidente\":" + incidenteId + ", \"reaccion\":1}";
+    				
+    		SecurityContext context = SecurityContextHolder.getContext();
+    		
+        	context.setAuthentication(cuenta);
+        	
 	    	this.mockMvc.perform(
 					post("/reaccion")
+						.header("X-Authorization", "ReaccionTest_Cuenta:pass")
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
 						.content(requestBody)
 						.session(this.session)
 						.accept(MediaType.APPLICATION_JSON_UTF8)
-				)//.andExpect(status().isCreated());
-	    	.andDo(print());
-	    	//throw new Exception(Integer.toString(ret.getResponse().getStatus()) + " -> " + ret.getResponse().getContentAsString());
+				).andExpect(status().isCreated());
     	}
     }
     

@@ -12,9 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.undav.colaboreitor.domain.Localidad;
@@ -113,7 +115,7 @@ public class LocalidadController {
         
     	return respuesta.conStatus(HttpStatus.CREATED, "localidad", arr);
     }
-
+    
     @RequestMapping(value="/localidad/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> delete(@PathVariable long id) throws JSONException {
         System.out.println("DELETE /localidad/" + id);
