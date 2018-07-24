@@ -20,6 +20,7 @@ sudo: true
 before_script:
   - sudo netstat -tupan
   - psql -U postgres -c "create database colaboreitor"
+  - psql -U postgres -c "create database colaboreitor_test"
   - psql -U postgres -c "create extension postgis"
   - psql -c "CREATE USER foo WITH PASSWORD 'bar';" -U postgres
 
