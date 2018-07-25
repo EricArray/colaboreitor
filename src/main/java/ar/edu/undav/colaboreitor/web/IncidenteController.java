@@ -164,7 +164,7 @@ public class IncidenteController {
     }
 
     @RequestMapping(value="/incidente", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> post(@RequestBody PostBody body) throws JSONException {
+    public ResponseEntity<String> post(@RequestBody PostBody body) throws Exception, JSONException {
         System.out.println("POST /incidente");
         
         Optional<Cp> opt = cpRepo.findById(body.cp);

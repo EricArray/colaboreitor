@@ -77,6 +77,7 @@ public class ReaccionTest {
 
     	Cuenta cuenta = new Cuenta("ReaccionTest_Cuenta", "pass", "RTC", cp, new BigDecimal("1.0"), new BigDecimal("1.0"), 0, Timestamp.valueOf(LocalDateTime.now()));
     	cuentaRepo.saveAndFlush(cuenta);
+        SecurityContextHolder.getContext().setAuthentication(cuenta);
     	
     	Incidente incidente = new Incidente(cuenta, cp, "ReaccionTest_Incidente", new BigDecimal("1.0"), new BigDecimal("1.0"), Timestamp.valueOf(LocalDateTime.now()));
     	incidenteRepo.saveAndFlush(incidente);
@@ -85,10 +86,6 @@ public class ReaccionTest {
     	
     	{
     		String requestBody = "{\"incidente\":" + incidenteId + ", \"reaccion\":1}";
-    				
-    		SecurityContext context = SecurityContextHolder.getContext();
-    		
-        	context.setAuthentication(cuenta);
         	
 	    	this.mockMvc.perform(
 					post("/reaccion")

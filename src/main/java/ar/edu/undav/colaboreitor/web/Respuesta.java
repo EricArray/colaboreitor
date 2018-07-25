@@ -49,19 +49,22 @@ public class Respuesta {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(r.toString());
 	}
 	
-	public Cuenta getCuenta() {
+	public Cuenta getCuenta() throws Exception {
 		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null) return null;
+		if (context == null) throw new Exception("No se pudo encontrar cuenta");
 		
     	Authentication auth = context.getAuthentication();
-    	if (auth == null) return null;
+		if (context == null) throw new Exception("No se pudo encontrar cuenta");
     	
     	Object principal = auth.getPrincipal();
-    	if (principal == null) return null;
+		if (context == null) throw new Exception("No se pudo encontrar cuenta");
     	
     	String username = principal.toString();
-    	if (username == null) return null;
+		if (context == null) throw new Exception("No se pudo encontrar cuenta");
     	
-    	return cuentaRepo.findByUsername(username);
+    	Cuenta cuenta = cuentaRepo.findByUsername(username);
+		if (context == null) throw new Exception("No se pudo encontrar cuenta");
+		
+		return cuenta;
 	}
 }

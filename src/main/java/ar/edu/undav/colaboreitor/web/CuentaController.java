@@ -44,10 +44,10 @@ public class CuentaController {
     public ResponseEntity<String> get() throws JSONException {
         System.out.println("GET /cuenta");
         
-        Cuenta cuenta = respuesta.getCuenta();
-        if (cuenta != null) {
+        try {
+            Cuenta cuenta = respuesta.getCuenta();
         	return respuesta.ok("cuenta", cuentaJson(cuenta));
-        } else {
+        } catch (Exception e) {
         	return respuesta.internalError("Error interno al leer cuenta");
         }
     }

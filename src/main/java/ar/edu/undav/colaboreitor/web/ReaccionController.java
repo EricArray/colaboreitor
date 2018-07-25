@@ -45,13 +45,10 @@ public class ReaccionController {
 	}
 
     @RequestMapping(value="/reaccion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> get() throws JSONException {
+    public ResponseEntity<String> get() throws Exception, JSONException {
         System.out.println("GET /reaccion");
         
     	Cuenta cuenta = respuesta.getCuenta();
-    	if (cuenta == null) {
-    		return respuesta.internalError("Error interno al leer cuenta");
-    	}
     	
         List<Reaccion> reacciones = reaccionRepo.findByCuenta(cuenta);
         
@@ -91,7 +88,7 @@ public class ReaccionController {
     }
 
     @RequestMapping(value="/reaccion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> post(@RequestBody PostBody body) throws JSONException {
+    public ResponseEntity<String> post(@RequestBody PostBody body) throws Exception, JSONException {
         System.out.println("POST /reaccion");
         
         Optional<Incidente> opt = incidenteRepo.findById(body.incidente);
