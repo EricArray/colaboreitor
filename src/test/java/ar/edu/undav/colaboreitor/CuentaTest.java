@@ -19,8 +19,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ar.edu.undav.colaboreitor.domain.Cp;
-import ar.edu.undav.colaboreitor.domain.Cuenta;
-import ar.edu.undav.colaboreitor.domain.Incidente;
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.repository.CpRepo;
 import ar.edu.undav.colaboreitor.repository.CuentaRepo;
@@ -35,8 +33,11 @@ public class CuentaTest {
     @Autowired MockHttpSession session;
     @Autowired MockHttpServletRequest request;
     
-    @Autowired CpRepo cpRepo;
-    @Autowired LocalidadRepo localidadRepo;
+	@Autowired CuentaRepo cuentaRepo;
+	@Autowired LocalidadRepo localidadRepo;
+	@Autowired CpRepo cpRepo;
+	@Autowired IncidenteRepo incidenteRepo;
+
     
     private MockMvc mockMvc;
 

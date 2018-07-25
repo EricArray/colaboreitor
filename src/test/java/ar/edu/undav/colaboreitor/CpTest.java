@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -21,7 +24,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ar.edu.undav.colaboreitor.domain.Cp;
 import ar.edu.undav.colaboreitor.domain.Cuenta;
-import ar.edu.undav.colaboreitor.domain.Incidente;
 import ar.edu.undav.colaboreitor.domain.Localidad;
 import ar.edu.undav.colaboreitor.repository.CpRepo;
 import ar.edu.undav.colaboreitor.repository.CuentaRepo;
@@ -36,7 +38,11 @@ public class CpTest {
     @Autowired MockHttpSession session;
     @Autowired MockHttpServletRequest request;
     
-    @Autowired LocalidadRepo localidadRepo;
+	@Autowired CuentaRepo cuentaRepo;
+	@Autowired LocalidadRepo localidadRepo;
+	@Autowired CpRepo cpRepo;
+	@Autowired IncidenteRepo incidenteRepo;
+
     
     private MockMvc mockMvc;
 
