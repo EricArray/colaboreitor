@@ -25,5 +25,6 @@ before_script:
   - psql -c "CREATE USER foo WITH PASSWORD 'bar';" -U postgres
 
 after_success:
-  - mvn cobertura:cobertura coveralls:report
+  - mvn clean test jacoco:report coveralls:report
+
 
