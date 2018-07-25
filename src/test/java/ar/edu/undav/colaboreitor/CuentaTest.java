@@ -70,7 +70,7 @@ public class CuentaTest {
     	
     	{
 	    	final String requestBody = "{" +
-	    			"\"username\":\"eric\", \"password\":\"pass\", \"nombre_real\":\"Eric\","+
+	    			"\"username\":\"eric\", \"password\":\"pass\", \"nombreReal\":\"Eric\","+
 	    			"\"cp\":\"" + cp.getCp() + "\"," + 
 	    			"\"dni\":\"88888888\",\"lng\":\"1.0\",\"lat\":\"1.0\"" +
 	    		"}";

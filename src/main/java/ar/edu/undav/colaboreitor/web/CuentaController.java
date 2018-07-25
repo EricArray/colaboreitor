@@ -55,7 +55,7 @@ public class CuentaController {
     public static class PostBody {
     	public String username;
     	public String password;
-    	public String nombre_real;
+    	public String nombreReal;
     	public String cp;
     	public String dni;
     	public String lng;
@@ -63,7 +63,22 @@ public class CuentaController {
     	
 		public PostBody() {
 			super();
-			// TODO Auto-generated constructor stub
+		}
+
+		public String getNombreReal() {
+			return nombreReal;
+		}
+
+		public void setNombreReal(String nombreReal) {
+			this.nombreReal = nombreReal;
+		}
+
+		public String getDni() {
+			return dni;
+		}
+
+		public void setDni(String dni) {
+			this.dni = dni;
 		}
 
 		public String getUsername() {
@@ -116,7 +131,7 @@ public class CuentaController {
         if (optCp.isPresent()) {
         	Cp cp = optCp.get();
         	long dni = Long.parseLong(body.dni); 
-        	Cuenta cuenta = new Cuenta(body.username, body.password, body.nombre_real,
+        	Cuenta cuenta = new Cuenta(body.username, body.password, body.nombreReal,
         			cp, new BigDecimal(body.lng), new BigDecimal(body.lat), dni,
         			Timestamp.valueOf(LocalDateTime.now())
         			);

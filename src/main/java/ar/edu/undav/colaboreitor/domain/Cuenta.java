@@ -34,7 +34,7 @@ public class Cuenta implements Authentication {
 	
 	protected String username;
 	protected String password;
-	protected String nombre_real;
+	protected String nombreReal;
 	protected BigDecimal lng;
 	protected BigDecimal lat;
 	protected long dni;
@@ -56,13 +56,13 @@ public class Cuenta implements Authentication {
 		super();
 	}
 
-	public Cuenta(String username, String password, String nombre_real, Cp cp,
+	public Cuenta(String username, String password, String nombreReal, Cp cp,
 			BigDecimal lng, BigDecimal lat,
 			long dni, Timestamp creacion) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.nombre_real = nombre_real;
+		this.nombreReal = nombreReal;
 		this.cp = cp;
 		this.lng = lng;
 		this.lat = lat;
@@ -103,12 +103,12 @@ public class Cuenta implements Authentication {
         this.passwordConfirm = passwordConfirm;
     }
 
-	public String getNombre_real() {
-		return nombre_real;
+	public String getNombreReal() {
+		return nombreReal;
 	}
 
-	public void setNombre_real(String nombre_real) {
-		this.nombre_real = nombre_real;
+	public void setNombreReal(String nombreReal) {
+		this.nombreReal = nombreReal;
 	}
 
 	public Cp getCp() {
@@ -169,43 +169,36 @@ public class Cuenta implements Authentication {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return username;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object getCredentials() {
-		// TODO Auto-generated method stub
 		return password;
 	}
 
 	@Override
 	public Object getDetails() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
 	@Override
 	public Object getPrincipal() {
-		// TODO Auto-generated method stub
 		return this;
 	}
 
 	@Override
 	public boolean isAuthenticated() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
 		
 	}
 
