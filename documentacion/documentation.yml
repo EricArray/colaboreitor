@@ -1,0 +1,591 @@
+openapi: "3.0.0"
+
+info:
+  title: Colaboreitor
+  version: "0.0.1"
+  
+  description: |-
+    Trabajo Práctico para Programación Distribuida I
+  
+  contact:
+    email: arroyoericdamian@gmail.com
+  
+host: "localhost:8080"
+
+schemes:
+- "http"
+
+paths:
+
+  /cuenta:
+    post:
+      summary: Crear una nueva cuenta
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CrearCuenta'
+      responses:
+        201:
+          description: Cuenta creada
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Cuenta'
+        400:
+          description: El nombre de usuario ya existe
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/RespuestaError'
+    
+    get:
+      summary: Obtener datos de mi cuenta
+      security:
+        api_key: []
+      responses:
+        200:
+          description: Devuelve datos
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Cuenta'
+    delete:
+      summary: Eliminar mi cuenta
+      security:
+        api_key: []
+      responses:
+        202:
+          description: Cuenta eliminada
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Cuenta'
+
+  /incidente:
+    post:
+      summary: Postear un incidente
+      security:
+        api_key: []
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CrearIncidente'
+      responses:
+        201:
+          description: Incidente creada
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Incidente'
+    get:
+      summary: Obtener lista de incidentes
+      security:
+        api_key: []
+      parameters:
+        - name: pos
+          description: |-
+            Posición geográfica para obetener incidentes cercanos.
+            
+            Debe tener el format [0-9]+\.[0-9]+,[0-9]+\.[0-9]+
+          example: "12.34,56.78"
+          in: query
+          required: false
+          schema:
+            type: string
+            
+        - name: nombre
+          description: Nombre del incidente (o parte del nombre)
+          in: query
+          required: false
+          schema:
+            type: string
+            
+        - name: localidad
+          description: Localidad de donde obetener incidentes
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Lista de incidentes (o lista vacía)
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Incidente'
+  
+  /incidente/{id}:
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: integer
+        format: int64
+      description: ID del incidente
+    get:
+      summary: Obtener lista de incidentes
+      security:
+        api_key: []
+      responses:
+        200:
+          description: Incidente con ese ID
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Incidente'
+        404:
+          description: No existe incidente con ese ID
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RespuestaError'
+    delete:
+      summary: Eliminar el incidente
+      security:
+        api_key: []
+      responses:
+        202:
+          description: Incidente eliminado
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Incidente'
+        403:
+          description: El incidente con ese ID fue creado con otra cuenta
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RespuestaError'
+        404:
+          description: No existe incidente con ese ID
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RespuestaError'
+
+  /reaccion:
+    post:
+      summary: Reaccionar a un incidente
+      security:
+        api_key: []
+      requestBody:
+        required: true
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/CrearReaccion'
+      responses:
+        201:
+          description: Reacción creada
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cuenta:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Reaccion'
+  
+  /cp:
+    get:
+      summary: Obtener todos los CP
+      security:
+        api_key: []
+      responses:
+        200:
+          description: Devuelve todos los Cp
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cp:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Cp'
+
+  /cp/{cp}:
+    parameters:
+    - name: cp
+      in: path
+      schema:
+        type: string
+      description: Código postal
+    get:
+      summary: Obtener datos del CP
+      security:
+        api_key: []
+      responses:
+        200:
+          description: Datos del CP
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    cp:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Cp'
+        404:
+          description: No existe ese CP
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RespuestaError'
+
+  /localidad:
+    get:
+      summary: Obtener todas las localidades
+      security:
+        api_key: []
+      responses:
+        200:
+          description: Devuelve todas las localidades
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    localidad:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Localidad'
+
+  /localidad/{id}:
+    parameters:
+    - name: id
+      in: "path"
+      schema:
+        type: integer
+        format: int64
+      description: ID de la localidad
+    get:
+      summary: Obtener datos de la localidad con ese ID
+      security:
+        api_key: []
+      responses:
+        200:
+          description: Datos de la localidad
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/Respuesta'
+                - type: object
+                  properties:
+                    localidad:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Localidad'
+        400:
+          description: No existe localidad con ese ID
+          content:
+            'application/json':
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/RespuestaError'
+
+
+components:
+  schemas:
+    
+    Respuesta:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP Status Code
+        timestamp:
+          type: string
+          format: date-time
+    
+    RespuestaError:
+      allOf:
+      - $ref: '#/components/schemas/Respuesta'
+      - type: object
+        properties:
+          reason:
+            type: string
+            description: Descripción del error
+    
+    Localidad:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID de la instancia
+        nombre:
+          type: string
+          description: Nombre de la localidad
+        lng:
+          type: string
+          example: "1.0"
+          description: Longitud
+        lat:
+          type: string
+          example: "2.0"
+          description: Latitud
+    
+    Cp:
+      type: object
+      properties:
+        cp:
+          type: string
+          example: "a1234bcd"
+          description: Código postal
+        localidad:
+          $ref: '#/components/schemas/Localidad/properties/id'
+        lng:
+          type: string
+          example: "1.0"
+          description: Longitud
+        lat:
+          type: string
+          example: "2.0"
+          description: Latitud
+    
+    Cuenta:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID de la instancia
+        username:
+          type: string
+          description: Nombre de usuario único
+        password:
+          type: string
+          format: password
+          description: Contraseña de la cuenta
+        nombreReal:
+          type: string
+          description: Nombre real de la persona
+        cp:
+          $ref: '#/components/schemas/Cp/properties/cp'
+        lng:
+          type: string
+          example: "1.0"
+          description: Longitud
+        lat:
+          type: string
+          example: "2.0"
+          description: Latitud
+        dni:
+          type: integer
+          format: int32
+          description: DNI de la persona
+        creacion:
+          type: string
+          format: date-time
+          description: Fecha-hora de creación de la cuenta
+    
+    Incidente:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID de instancia
+        nombre:
+          type: string
+          description: Título del incidente
+#        cuenta:
+#          $ref: '#/components/schemas/Cuenta/properties/id'
+        cp:
+          $ref: '#/components/schemas/Cp/properties/cp'
+        lng:
+          type: string
+          example: "1.0"
+          description: Longitud
+        lat:
+          type: string
+          example: "2.0"
+          description: Latitud
+        creacion:
+          type: string
+          format: date-time
+          description: Fecha-hora de creacion
+        puntos:
+          type: integer
+          description: Suma de reacciones sobre este incidente
+        fotos:
+          type: array
+          items:
+            type: string
+            format: url
+          description: Fotos a este incidente
+    
+    Reaccion:
+      type: object
+      properties:
+        incidente:
+          $ref: '#/components/schemas/Incidente/properties/id'
+        cuenta:
+          $ref: '#/components/schemas/Cuenta/properties/id'
+        reaccion:
+          type: integer
+          enum:
+          - +1
+          - -1
+          description: |-
+            Reacción de una cuenta a este incidente.
+            
+            Puede ser +1 o -1
+    
+    CrearCuenta:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        nombreReal:
+          type: string
+        cp:
+          $ref: '#/components/schemas/Cp/properties/cp'
+        lng:
+          type: string
+          example: "1.0"
+        lat:
+          type: string
+          example: "2.0"
+        dni:
+          type: integer
+          format: int32
+    
+    CrearLocalidad:
+      type: object
+      properties:
+        nombre:
+          type: string
+        lng:
+          type: string
+          example: "1.0"
+        lat:
+          type: string
+          example: "2.0"
+    
+    CrearCp:
+      type: object
+      properties:
+        cp:
+          type: string
+          example: "a1234bcd"
+        localidad:
+          $ref: '#/components/schemas/Localidad/properties/id'
+        lng:
+          type: string
+          example: "1.0"
+        lat:
+          type: string
+          example: "2.0"
+    
+    CrearIncidente:
+      type: object
+      properties:
+        nombre:
+          type: string
+        cp:
+          $ref: '#/components/schemas/Cp/properties/cp'
+        lng:
+          type: string
+          example: "1.0"
+        lat:
+          type: string
+          example: "2.0"
+  
+    CrearReaccion:
+      type: object
+      properties:
+        incidente:
+          $ref: '#/components/schemas/Incidente/properties/id'
+        reaccion:
+          type: integer
+          enum:
+          - +1
+          - -1
+  
+  securitySchemes:
+    api_key:
+      type: "apiKey"
+      name: "X-Authorization"
+      in: header
+      description: |-
+        Nombre de usuario y contraseña separados por :
+        
+        Por ejemplo:
+        ```
+        X-Authorization: eric:123456
+        ```
+      
